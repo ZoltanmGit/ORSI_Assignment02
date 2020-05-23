@@ -2,7 +2,7 @@
 #include <fstream>
 #include <vector>
 #include "pipe.hpp"
-#include <future>
+#include <thread>
 
 //Prints out the inputs
 void PrintM(std::vector<std::vector<std::vector<int>>> argmatrices, std::vector<std::vector<int>> argvectors)
@@ -30,19 +30,27 @@ void PrintM(std::vector<std::vector<std::vector<int>>> argmatrices, std::vector<
 	}
 }
 //Applies a transformation, passes parameter BY REFERENCE watch out for that
-std::vector<int> Transform(std::vector<std::vector<int>> matrix, std::vector<int>& vector)
+std::vector<int> Transform(std::vector<std::vector<int>> matrix, std::vector<int> vector)
 {
-	std::vector<int> tempvector = vector;
+	std::vector<int> tempvector(4);
 	for (int i = 0; i < 4;i++)
 	{
-		int newvalue = 0;
+		tempvector[i] = 0;
 		for (int j = 0; j < 4; j++)
 		{
-			newvalue = newvalue + matrix[i][j] * tempvector[j];
+			tempvector[i] += matrix[i][j] * vector[j];
 		}
-		vector[i] = newvalue;
 	}
-	return vector;
+	return tempvector;
+}
+void ThreadFunction(std::vector<std::vector<int>> ThreadMatrix, Pipe<std::vector<int>>* MyPipe,Pipe<std::vector<int>>* NextPipe, const int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		std::vector<int> vectorfrompipe = MyPipe->pop(); //Takes out from his pipe and waits for next
+		std::vector<int> vectortopipe = Transform(ThreadMatrix, vectorfrompipe); //Applies the transformation
+		NextPipe->push(vectortopipe);	//Puts the vector into the next threads pipe
+	}
 }
 //Reads the matrices from the input files
 //Starts M threads
@@ -76,17 +84,36 @@ int main()
 		}
 	}
 	iFile2.close();
-	//PrintM(matrices, vectors);
-	
-	Transform(matrices[0], vectors[0]);
-	Transform(matrices[1], vectors[0]);
-	Transform(matrices[2], vectors[0]);
-	for (int i = 0; i < 4; i++)
+	//Creating a Pipeline using Pipe.hpp
+	std::vector<Pipe<std::vector<int>>*> PipeLine; //Last pipe is the main's
+	for (int i = 0; i < m+1; i++)
 	{
-		std::cout << vectors[0][i] << " ";
+		PipeLine.push_back(new Pipe<std::vector<int>>);
 	}
-	//Starting M threads
-	/*for (int i = 0; i < m; i++)
+	//Creating Threads
+	std::vector<std::thread> threads(m);
+	for (int i = 0; i < m; i++)
 	{
-	}*/
+		threads.push_back(std::thread(ThreadFunction,matrices[i],PipeLine[i],PipeLine[i+1],n));
+	}
+	
+	//Starting the Dataflow
+	std::ofstream oFile("output.txt");
+	std::vector<int> x;
+	for (int i = 0; i < n; i++)
+	{
+		PipeLine[0]->push(vectors[i]);
+		x = PipeLine[m]->pop();
+		oFile << x[0] << " " << x[1] << " " << x[2] << std::endl;
+	}
+	oFile.close();
+	//Join Threads
+	for (int i = 0; i < threads.size(); i++)
+	{
+		if (threads[i].joinable())
+		{
+			threads[i].join();
+		}
+	}
+	return 0;
 }
