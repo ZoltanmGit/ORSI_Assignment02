@@ -29,8 +29,24 @@ void PrintM(std::vector<std::vector<std::vector<int>>> argmatrices, std::vector<
 		std::cout << argvectors[i][3] << std::endl;
 	}
 }
+//Applies a transformation, passes parameter BY REFERENCE watch out for that
+std::vector<int> Transform(std::vector<std::vector<int>> matrix, std::vector<int>& vector)
+{
+	std::vector<int> tempvector = vector;
+	for (int i = 0; i < 4;i++)
+	{
+		int newvalue = 0;
+		for (int j = 0; j < 4; j++)
+		{
+			newvalue = newvalue + matrix[i][j] * tempvector[j];
+		}
+		vector[i] = newvalue;
+	}
+	return vector;
+}
 //Reads the matrices from the input files
 //Starts M threads
+//Receives results
 int main()
 {
 	int m,n;
@@ -60,10 +76,17 @@ int main()
 		}
 	}
 	iFile2.close();
-	PrintM(matrices, vectors);
+	//PrintM(matrices, vectors);
+	
+	Transform(matrices[0], vectors[0]);
+	Transform(matrices[1], vectors[0]);
+	Transform(matrices[2], vectors[0]);
+	for (int i = 0; i < 4; i++)
+	{
+		std::cout << vectors[0][i] << " ";
+	}
 	//Starting M threads
 	/*for (int i = 0; i < m; i++)
 	{
-
 	}*/
 }
