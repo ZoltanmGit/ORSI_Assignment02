@@ -62,8 +62,8 @@ int main()
 	iFile2.close();
 	PrintM(matrices, vectors);
 	//Starting M threads
-	for (int i = 0; i < m; i++)
+	/*for (int i = 0; i < m; i++)
 	{
 
-	}
+	}*/
 }
