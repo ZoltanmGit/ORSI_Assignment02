@@ -47,16 +47,3 @@ A feladatot C++ nyelvben implementálva, a C++11 által biztosított <thread> se
 https://people.inf.elte.hu/mykeesg/19_20_2/pipe.hpp itt található egy segédfájl.
 
 A pipe.hpp fájlnak tartalmán nem kell (nem is szükséges) változtatni - ezt az osztály egy konkurens felhasználásra tervezett, szálbiztos implementációt tartalmaz egy olyan (generikus) adatszerkezetre, melynek van egy T pop() és egy push(T&) metódusa adatok továbbításához (ha üres adatszerkezetre hív pop()-ot a program, akkor nem elszáll segfaulttal / exceptionnel, hanem addig vár, amíg nem érkezik adat. Pont emiatt vigyázni kell, hogy ne okozzon deadlockot a hibásan megírt felhasználása).
-Általános elvárások:
-
-Fokozottan kérek mindenkit, hogy a beadandó határidejét (május 31, 23:59) vegye figyelembe! Kérlek oszd be az idődet, hogy ne csússz le a határidőről semmi esetben sem! Ez után nem áll módomban elfogadni megoldást, kifogástól és indoklástól függetlenül! (Nem tudtam beadni, de elküldöm emailben; pont feltöltöttem volna, de lezárt a BEAD, jó lesz facebookon? stb.. Nem, nem lesz jó egyik esetben sem.)
-
-Kérek mindenkit, hogy olvassa el a BEAD-on a hozzászólásokat, amiket esetleg írok neki, mielőtt újra és újra feltölti a megoldást, így elkerülhető, hogy feleslegesen terheld a szervert, és egy körben lehet a legtöbb hibát javítani.
-
-A megoldást egyetlen ZIP fájlba tömörítve töltsd fel! Csak a szükséges forrásfájl(oka)t rakd bele az állomány gyökerébe, teljes projektet, solutiont (.cbp, .sln, illetve az ezekhez tartozó többi fájl), object fájlokat, vagy közvetlenül futtatható állományt (a.exe, a.out, etc..) ne!
-
-A beadandót százalékosan értékelem, a minél eredményesebb munkához a guide a lentebb található linken elérhető.
-
-Javítani bármennyiszer lehet, de a határidő szoros közeledtével egyre kisebb az esély rá, hogy lesz időm megnézni azt, ha két évfolyam utolsó nap jön rá, hogy a bead még nincs kész.
-
-Szeretnék mindenkit megkérni, hogy az alábbiak vegye figyelembe a feltöltés során:
