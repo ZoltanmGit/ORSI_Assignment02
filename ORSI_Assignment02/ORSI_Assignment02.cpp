@@ -4,7 +4,7 @@
 #include "pipe.hpp"
 #include <thread>
 
-//Prints out the inputs
+//UNUSED/RENDUNDANT ----Prints out the inputs, it was used to print the matrices and vectors to test the correctness of input handling
 void PrintM(std::vector<std::vector<std::vector<int>>> argmatrices, std::vector<std::vector<int>> argvectors)
 {
 	std::cout << argmatrices.size() << std::endl;
@@ -97,7 +97,7 @@ int main()
 		threads.push_back(std::thread(ThreadFunction,matrices[i],PipeLine[i],PipeLine[i+1],n));
 	}
 	
-	//Starting the Dataflow
+	//Starting the Dataflow and writing finished products to output.txt
 	std::ofstream oFile("output.txt");
 	std::vector<int> x;
 	for (int i = 0; i < n; i++)
